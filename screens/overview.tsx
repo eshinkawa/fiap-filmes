@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  Image,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 
 const Overview = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
@@ -32,8 +39,11 @@ const Overview = ({ navigation }) => {
       data={movies}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('Details', { movieDetails: item })}>
-          <Text>{item.title}</Text>
+        <TouchableOpacity
+          style={styles.movieContainer}
+          onPress={() => navigation.navigate('Details', { movieDetails: item })}>
+          {item.posterUrl ? <Image source={{ uri: item.posterUrl }} style={styles.image} /> : null}
+          <Text style={styles.text}>{item.title}</Text>
         </TouchableOpacity>
       )}
     />
@@ -41,3 +51,18 @@ const Overview = ({ navigation }) => {
 };
 
 export default Overview;
+
+const styles = StyleSheet.create({
+  movieContainer: {
+    marginHorizontal: 32,
+    marginVertical: 10,
+    padding: 16,
+    borderColor: 'black',
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  image: { width: 100, height: 100 },
+  text: { marginLeft: 8 },
+});
